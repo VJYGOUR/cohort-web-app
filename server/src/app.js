@@ -30,7 +30,7 @@ app.use("/api/health", healthRoute);
 // Consider renaming to avoid path conflicts
 
 // Serve React build for production
-const clientBuildPath = path.join(__dirname, "../frontend/dist");
+const clientBuildPath = path.join(__dirname, "../client/dist");
 app.use(express.static(clientBuildPath));
 app.get(/^(?!\/api).*/, (req, res) => {
   res.sendFile(path.join(clientBuildPath, "index.html"));
