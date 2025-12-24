@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import app from "./app.js";
-import connectDB from "./src/lib/db.js";
+import connectDB from "./lib/db.js";
 
 // Optional: Test Redis connection
 

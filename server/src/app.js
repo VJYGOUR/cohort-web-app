@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import healthRoute from "./src/routes/health.route.js";
+import healthRoute from "./routes/health.route.js";
 
 const app = express();
 
