@@ -6,7 +6,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import healthRoute from "./routes/health.route.js";
-
+import authRoutes from "./routes/auth.route.js";
+import testRoutes from "./routes/test.route.js";
+import adminRoutes from "./routes/admin.route.js";
 const app = express();
 
 // __dirname polyfill for ES modules
@@ -27,6 +29,9 @@ app.use(express.json());
 
 // Routes
 app.use("/api/health", healthRoute);
+app.use("/api/auth", authRoutes);
+app.use("/api/test", testRoutes);
+app.use("/api/admin", adminRoutes);
 // Consider renaming to avoid path conflicts
 
 // Serve React build for production
