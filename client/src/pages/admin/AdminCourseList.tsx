@@ -25,18 +25,27 @@ const AdminCourseList = () => {
       <div className="space-y-3">
         {courses.map((course) => (
           <div key={course._id} className="border p-4 rounded bg-white shadow">
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <div>
                 <h3 className="font-semibold">{course.title}</h3>
                 <p className="text-sm text-gray-600">Status: {course.status}</p>
               </div>
 
-              <Link
-                to={`/admin/courses/${course._id}/edit`}
-                className="text-blue-600"
-              >
-                Edit
-              </Link>
+              <div className="flex gap-3">
+                <Link
+                  to={`/admin/courses/${course._id}/edit`}
+                  className="text-blue-600"
+                >
+                  Edit
+                </Link>
+
+                <Link
+                  to={`/admin/courses/${course._id}/cohorts`}
+                  className="text-green-600 font-medium"
+                >
+                  View Cohorts →
+                </Link>
+              </div>
             </div>
           </div>
         ))}

@@ -11,6 +11,9 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminCourseList from "./pages/admin/AdminCourseList";
 import CreateCourse from "./pages/admin/CreateCourse";
 import EditCourse from "./pages/admin/EditCourse";
+import AdminCohortList from "./pages/admin/AdminCohortList";
+import CreateCohort from "./pages/admin/CreateCohort";
+import EditCohort from "./pages/admin/EditCohort";
 
 const App = () => {
   return (
@@ -35,6 +38,16 @@ const App = () => {
             <Route path="/admin/courses" element={<AdminCourseList />} />
             <Route path="/admin/courses/new" element={<CreateCourse />} />
             <Route path="/admin/courses/:id/edit" element={<EditCourse />} />
+            {/* Cohorts (Module 1.2) */}
+            <Route
+              path="/admin/courses/:courseId/cohorts"
+              element={<AdminCohortList />}
+            />
+            <Route
+              path="/admin/courses/:courseId/cohorts/new"
+              element={<CreateCohort />}
+            />
+            <Route path="/admin/cohorts/:id/edit" element={<EditCohort />} />
           </Route>
         </Route>
       </Routes>
