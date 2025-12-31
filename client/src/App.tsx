@@ -14,6 +14,8 @@ import EditCourse from "./pages/admin/EditCourse";
 import AdminCohortList from "./pages/admin/AdminCohortList";
 import CreateCohort from "./pages/admin/CreateCohort";
 import EditCohort from "./pages/admin/EditCohort";
+import CourseList from "./pages/CourseList";
+import CourseCohorts from "./pages/CourseCohorts";
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/courses" element={<CourseList />} />
+        <Route path="/courses/:courseId" element={<CourseCohorts />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/verify-email" element={<VerifyEmail />} />

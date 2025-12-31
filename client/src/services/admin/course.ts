@@ -1,5 +1,5 @@
-import api from "../axios/axios";
-import type { Course } from "../types/course";
+import api from "../../axios/axios";
+import type { Course } from "../../types/admin/course";
 
 export interface CreateCoursePayload {
   title: string;

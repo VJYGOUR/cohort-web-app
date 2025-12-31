@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../axios/axios";
-import { updateCohort } from "../../services/cohort";
-import { type Cohort } from "../../types/cohort";
+import { updateCohort } from "../../services/admin/cohort";
+import { type Cohort } from "../../types/admin/cohort";
 
 /* ---- Types ---- */
 

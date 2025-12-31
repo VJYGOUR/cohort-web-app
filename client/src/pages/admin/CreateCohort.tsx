@@ -1,6 +1,9 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { createCohort, type CreateCohortPayload } from "../../services/cohort";
+import {
+  createCohort,
+  type CreateCohortPayload,
+} from "../../services/admin/cohort";
 
 const CreateCohort = () => {
   const { courseId } = useParams<{ courseId: string }>();

@@ -1,5 +1,5 @@
-import api from "../axios/axios";
-import {type Cohort } from "../types/cohort";
+import api from "../../axios/axios";
+import { type Cohort } from "../../types/admin/cohort";
 
 export interface CreateCohortPayload {
   courseId: string;

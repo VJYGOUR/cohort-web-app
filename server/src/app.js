@@ -11,6 +11,7 @@ import testRoutes from "./routes/test.route.js";
 import adminRoutes from "./routes/admin.route.js";
 import adminCourseRoutes from "./routes/course.route.js";
 import cohortRoutes from "./routes/cohort.route.js";
+import publicRoutes from "./routes/public.route.js";
 const app = express();
 
 // __dirname polyfill for ES modules
@@ -37,6 +38,9 @@ app.use("/api/admin", adminRoutes);
 
 app.use("/api", adminCourseRoutes);
 app.use("/api", cohortRoutes);
+// app.js
+
+app.use("/api", publicRoutes);
 
 // Consider renaming to avoid path conflicts
 

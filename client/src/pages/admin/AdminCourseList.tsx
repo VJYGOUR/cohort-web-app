@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import type { Course } from "../../types/course";
-import { getAdminCourses } from "../../services/course";
+import type { Course } from "../../types/admin/course";
+import { getAdminCourses } from "../../services/admin/course";
 
 const AdminCourseList = () => {
   const [courses, setCourses] = useState<Course[]>([]);

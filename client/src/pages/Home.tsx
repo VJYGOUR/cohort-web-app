@@ -36,11 +36,13 @@ const Home = () => {
         {/* Right side: Info + buttons */}
         <div className="w-full md:w-1/2 flex flex-col gap-6">
           <h1 className="text-3xl font-bold text-gray-900">MERN Cohort App</h1>
+
           <p className="text-gray-700">
-            Welcome! This is the home page. Check the backend status and
-            navigate to your dashboard.
+            Learn real-world MERN skills through structured courses and live
+            cohorts.
           </p>
 
+          {/* Backend status */}
           <div className="p-4 rounded border border-gray-200 bg-gray-50">
             <h2 className="text-lg font-semibold mb-2">Backend Status</h2>
             <p
@@ -52,13 +54,22 @@ const Home = () => {
             </p>
           </div>
 
+          {/* Navigation buttons */}
           <div className="flex gap-4 mt-4 flex-wrap">
+            <button
+              onClick={() => navigate("/courses")}
+              className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded shadow transition"
+            >
+              Browse Courses
+            </button>
+
             <button
               onClick={() => navigate("/login")}
               className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded shadow transition"
             >
               Login
             </button>
+
             <button
               onClick={() => navigate("/signup")}
               className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded shadow transition"

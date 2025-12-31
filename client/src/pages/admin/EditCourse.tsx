@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { type Course } from "../../types/course";
-import { getAdminCourses, updateCourse } from "../../services/course";
+import { type Course } from "../../types/admin/course";
+import { getAdminCourses, updateCourse } from "../../services/admin/course";
 
 const EditCourse = () => {
   const { id } = useParams<{ id: string }>();

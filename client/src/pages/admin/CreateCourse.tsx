@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { createCourse } from "../../services/course";
-import type { CreateCoursePayload } from "../../services/course";
+import { createCourse } from "../../services/admin/course";
+import type { CreateCoursePayload } from "../../services/admin/course";
 
 const CreateCourse = () => {
   const navigate = useNavigate();

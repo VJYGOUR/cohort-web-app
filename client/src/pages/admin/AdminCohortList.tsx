@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { type Cohort } from "../../types/cohort";
-import { getCohortsByCourse } from "../../services/cohort";
+import { type Cohort } from "../../types/admin/cohort";
+import { getCohortsByCourse } from "../../services/admin/cohort";
 
 const AdminCohortList = () => {
   const { courseId } = useParams<{ courseId: string }>();

@@ -1,11 +1,7 @@
-export type CourseStatus = "draft" | "published";
-
+// src/types/course.ts
 export interface Course {
   _id: string;
   title: string;
   description: string;
   thumbnail?: string;
-  certificateTitle: string;
-  status: CourseStatus;
-  createdAt: string;
 }
