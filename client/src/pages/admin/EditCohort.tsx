@@ -5,7 +5,7 @@ import api from "../../axios/axios";
 import { updateCohort } from "../../services/admin/cohort";
 import { type Cohort } from "../../types/admin/cohort";
 
-/* ---- Types ---- */
+/* ---------------- Types ---------------- */
 
 type CohortStatus =
   | "draft"
@@ -25,12 +25,13 @@ type EditCohortForm = {
   status: CohortStatus;
 };
 
-/* ---- Component ---- */
+/* ---------------- Component ---------------- */
 
 const EditCohort = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(true);
   const [cohortStatus, setCohortStatus] = useState<CohortStatus>("draft");
 
   const {
@@ -40,40 +41,59 @@ const EditCohort = () => {
     formState: { isSubmitting },
   } = useForm<EditCohortForm>();
 
-  /* ---- Load Cohort ---- */
+  /* ---------------- Load cohort ---------------- */
+
   useEffect(() => {
     if (!id) return;
 
     const fetchCohort = async () => {
-      const res = await api.get<Cohort>(`/admin/cohorts/${id}`);
-      const cohort = res.data;
+      try {
+        const res = await api.get<Cohort>(`/admin/cohorts/${id}`);
+        const cohort = res.data;
 
-      setCohortStatus(cohort.status);
+        setCohortStatus(cohort.status);
 
-      reset({
-        name: cohort.name,
-        price: cohort.price,
-        capacity: cohort.capacity,
-        enrollmentStartDate: cohort.enrollmentStartDate.slice(0, 10),
-        enrollmentEndDate: cohort.enrollmentEndDate.slice(0, 10),
-        startDate: cohort.startDate.slice(0, 10),
-        endDate: cohort.endDate.slice(0, 10),
-        status: cohort.status,
-      });
+        reset({
+          name: cohort.name,
+          price: cohort.price,
+          capacity: cohort.capacity,
+          enrollmentStartDate: cohort.enrollmentStartDate.slice(0, 10),
+          enrollmentEndDate: cohort.enrollmentEndDate.slice(0, 10),
+          startDate: cohort.startDate.slice(0, 10),
+          endDate: cohort.endDate.slice(0, 10),
+          status: cohort.status,
+        });
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to load cohort", error);
+      }
     };
 
     fetchCohort();
   }, [id, reset]);
 
-  /* ---- Submit ---- */
+  /* ---------------- Submit ---------------- */
+
   const onSubmit: SubmitHandler<EditCohortForm> = async (data) => {
     if (!id) return;
 
     await updateCohort(id, data);
-    navigate(-1); // go back to cohort list
+    navigate(-1);
   };
 
-  /* ---- UI ---- */
+  /* ---------------- Loading UI ---------------- */
+
+  if (loading) {
+    return (
+      <div className="max-w-lg bg-white p-6 rounded shadow">
+        <p className="text-gray-600">Loading cohort data...</p>
+      </div>
+    );
+  }
+
+  /* ---------------- UI ---------------- */
+
   return (
     <div className="max-w-lg bg-white p-6 rounded shadow">
       <h2 className="text-xl font-semibold mb-1">Edit Cohort</h2>

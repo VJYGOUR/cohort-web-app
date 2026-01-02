@@ -59,7 +59,7 @@ export const getCohortsByCourse = async (req, res) => {
     const cohorts = await Cohort.find({ courseId })
       .populate("courseId", "title")
       .sort({ startDate: 1 });
-    console.log(cohorts);
+
     res.json(cohorts);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch cohorts" });
@@ -131,4 +131,15 @@ export const enrollUser = async (req, res) => {
   await cohort.save();
 
   res.json({ message: "Enrollment successful" });
+};
+// controllers/cohort.controllers.js
+export const getCohortById = async (req, res) => {
+  const { id } = req.params;
+
+  const cohort = await Cohort.findById(id);
+  if (!cohort) {
+    return res.status(404).json({ message: "Cohort not found" });
+  }
+
+  res.json(cohort);
 };

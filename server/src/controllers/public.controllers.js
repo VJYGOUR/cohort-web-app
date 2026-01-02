@@ -20,6 +20,6 @@ export const getPublicCohortsByCourse = async (req, res) => {
     enrollmentStartDate: { $lte: now },
     enrollmentEndDate: { $gte: now },
   }).select("name price startDate capacity");
-
+  console.log(cohorts);
   res.json(cohorts);
 };
