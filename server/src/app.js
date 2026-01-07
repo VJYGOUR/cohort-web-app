@@ -13,6 +13,7 @@ import adminCourseRoutes from "./routes/course.route.js";
 import cohortRoutes from "./routes/cohort.route.js";
 import publicRoutes from "./routes/public.route.js";
 import enrollmentRoutes from "./routes/enrollment.route.js";
+import paymentRoutes from "./routes/payment.route.js";
 const app = express();
 
 // __dirname polyfill for ES modules
@@ -40,6 +41,8 @@ app.use("/api/admin", adminRoutes);
 app.use("/api", adminCourseRoutes);
 app.use("/api", cohortRoutes);
 app.use("/api/enrollments", enrollmentRoutes);
+
+app.use("/api/payments", paymentRoutes);
 
 // app.js
 

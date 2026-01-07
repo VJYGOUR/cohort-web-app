@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { getUserEnrollments } from "../services/enrollment";
 import type { Enrollment } from "../types/enrollment";
+import PaymentButton from "../components/PaymentButton";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
@@ -17,12 +18,11 @@ const Dashboard = () => {
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-6">Welcome, {user?.name}</h1>
-
       <p className="mb-6 text-gray-700">You are logged in as a user.</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Enrollments */}
-        <div className="border p-6 rounded bg-white shadow hover:shadow-lg transition-shadow">
+        <div className="border p-6 rounded bg-white shadow">
           <h2 className="text-lg font-medium mb-4">Your Enrolled Cohorts</h2>
 
           {loading && (
@@ -48,22 +48,29 @@ const Dashboard = () => {
                   Starts: {new Date(e.cohortId.startDate).toDateString()}
                 </p>
 
-                <span
-                  className={`inline-block mt-2 px-2 py-1 text-xs rounded ${
-                    e.status === "pending"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : "bg-green-100 text-green-800"
-                  }`}
-                >
-                  {e.status.toUpperCase()}
-                </span>
+                {/* Status */}
+                <div className="mt-2">
+                  {e.status === "pending" ? (
+                    <>
+                      <span className="inline-block mb-2 px-2 py-1 text-xs rounded bg-yellow-100 text-yellow-800">
+                        PENDING PAYMENT
+                      </span>
+
+                      <PaymentButton enrollmentId={e._id} />
+                    </>
+                  ) : (
+                    <span className="inline-block px-2 py-1 text-xs rounded bg-green-100 text-green-800">
+                      PAID
+                    </span>
+                  )}
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Upcoming events (future) */}
-        <div className="border p-6 rounded bg-white shadow hover:shadow-lg transition-shadow">
+        {/* Future block */}
+        <div className="border p-6 rounded bg-white shadow">
           <h2 className="text-lg font-medium mb-2">Upcoming Events</h2>
           <p className="text-gray-600">
             Sessions and events will appear here later.

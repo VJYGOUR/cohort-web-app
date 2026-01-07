@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(null);
     }
   };
-
+  //Fixed
   useEffect(() => {
     const initAuth = async () => {
       try {

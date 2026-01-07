@@ -1,6 +1,6 @@
 import Enrollment from "../models/enrollment.models.js";
 import Cohort from "../models/cohort.models.js";
-
+//enrollment = document creation of the user who click on enroll button in enrollment model in DB with particular details thats it.
 export const createEnrollment = async (req, res) => {
   try {
     const userId = req.user.id; // from auth middleware

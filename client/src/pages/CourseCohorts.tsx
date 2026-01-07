@@ -5,9 +5,14 @@ import { AxiosError } from "axios";
 import { getPublicCohortsByCourse } from "../services/publicCourse";
 import type { Cohort } from "../types/cohort";
 import api from "../axios/axios";
+import PaymentButton from "../components/PaymentButton";
 
 type ApiError = {
   message: string;
+};
+
+type EnrollmentMap = {
+  [cohortId: string]: string; // cohortId -> enrollmentId
 };
 
 const CourseCohorts = () => {
@@ -17,42 +22,46 @@ const CourseCohorts = () => {
   const [cohorts, setCohorts] = useState<Cohort[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [enrollments, setEnrollments] = useState<EnrollmentMap>({});
 
   useEffect(() => {
     if (!courseId) return;
-
     getPublicCohortsByCourse(courseId).then((res) => setCohorts(res.data));
   }, [courseId]);
+
+  /* ---------------- ENROLL ---------------- */
 
   const handleEnroll = async (cohortId: string) => {
     setMessage(null);
     setLoadingId(cohortId);
 
     try {
-      await api.post("/enrollments", { cohortId });
-      setMessage("✅ Enrollment requested successfully");
+      const res = await api.post("/enrollments", { cohortId });
+
+      setEnrollments((prev) => ({
+        ...prev,
+        [cohortId]: res.data._id,
+      }));
+
+      setMessage("✅ Enrollment requested. Please complete payment.");
     } catch (err) {
       const error = err as AxiosError<ApiError>;
 
-      // ❌ Not logged in
       if (error.response?.status === 401) {
         setMessage("Please login or signup to enroll.");
         setTimeout(() => navigate("/login"), 1500);
         return;
       }
 
-      // ❌ Known backend error
-      if (error.response?.data?.message) {
-        setMessage(error.response.data.message);
-        return;
-      }
-
-      // ❌ Fallback
-      setMessage("Something went wrong. Please try again.");
+      setMessage(
+        error.response?.data?.message || "Something went wrong. Try again."
+      );
     } finally {
       setLoadingId(null);
     }
   };
+
+  /* ---------------- UI ---------------- */
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -69,23 +78,31 @@ const CourseCohorts = () => {
       )}
 
       <div className="space-y-4">
-        {cohorts.map((c) => (
-          <div key={c._id} className="border p-4 rounded bg-white shadow">
-            <h3 className="font-medium">{c.name}</h3>
-            <p className="text-sm text-gray-600">
-              Starts on {new Date(c.startDate).toDateString()}
-            </p>
-            <p className="text-sm">Price: ₹{c.price}</p>
+        {cohorts.map((c) => {
+          const enrollmentId = enrollments[c._id];
 
-            <button
-              onClick={() => handleEnroll(c._id)}
-              disabled={loadingId === c._id}
-              className="mt-3 bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
-            >
-              {loadingId === c._id ? "Enrolling..." : "Enroll"}
-            </button>
-          </div>
-        ))}
+          return (
+            <div key={c._id} className="border p-4 rounded bg-white shadow">
+              <h3 className="font-medium">{c.name}</h3>
+              <p className="text-sm text-gray-600">
+                Starts on {new Date(c.startDate).toDateString()}
+              </p>
+              <p className="text-sm">Price: ₹{c.price}</p>
+
+              {!enrollmentId ? (
+                <button
+                  onClick={() => handleEnroll(c._id)}
+                  disabled={loadingId === c._id}
+                  className="mt-3 bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                >
+                  {loadingId === c._id ? "Enrolling..." : "Enroll"}
+                </button>
+              ) : (
+                <PaymentButton enrollmentId={enrollmentId} />
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
