@@ -3,6 +3,7 @@ import razorpay from "../razorpay.js";
 import Enrollment from "../models/enrollment.models.js";
 import Cohort from "../models/cohort.models.js";
 import Payment from "../models/payment.models.js";
+import crypto from "crypto";
 
 /**
  * Create Razorpay order for an enrollment
@@ -23,7 +24,12 @@ export const createRazorpayOrder = async (req, res) => {
     if (!enrollment) {
       return res.status(400).json({ message: "Invalid enrollment" });
     }
-
+    // 2️⃣ Block already-paid enrollments
+    if (enrollment.status === "paid") {
+      return res.status(400).json({
+        message: "Payment already completed for this enrollment",
+      });
+    }
     // 2️⃣ Get cohort price
     const cohort = await Cohort.findById(enrollment.cohortId);
     if (!cohort) {
@@ -66,5 +72,53 @@ export const createRazorpayOrder = async (req, res) => {
   } catch (err) {
     console.error("Razorpay order creation failed:", err);
     return res.status(500).json({ message: "Order creation failed" });
+  }
+};
+// controllers/payment.controller.js
+
+export const verifyPayment = async (req, res) => {
+  try {
+    const { orderId, paymentId, signature } = req.body;
+
+    // 1️⃣ Find payment record
+    const payment = await Payment.findOne({
+      razorpayOrderId: orderId,
+    });
+
+    if (!payment) {
+      return res.status(404).json({ message: "Payment record not found" });
+    }
+
+    // 2️⃣ Generate expected signature
+    const body = `${orderId}|${paymentId}`;
+
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(body)
+      .digest("hex");
+
+    // 3️⃣ Compare signatures
+    if (expectedSignature !== signature) {
+      payment.status = "failed";
+      await payment.save();
+
+      return res.status(400).json({ message: "Invalid payment signature" });
+    }
+
+    // 4️⃣ Mark payment as paid
+    payment.status = "paid";
+    payment.razorpayPaymentId = paymentId;
+    payment.razorpaySignature = signature;
+    await payment.save();
+
+    // 5️⃣ Activate enrollment
+    await Enrollment.findByIdAndUpdate(payment.enrollmentId, {
+      status: "paid",
+    });
+
+    res.json({ message: "Payment verified successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Payment verification failed" });
   }
 };
