@@ -29,6 +29,11 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   })
 );
+app.use(
+  "/api/payments/webhook",
+  express.raw({ type: "application/json" }),
+  paymentRoutes
+);
 app.use(cookieParser());
 app.use(express.json());
 

@@ -14,7 +14,7 @@ const enrollmentSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "paid", "cancelled"],
+      enum: ["pending", "paid", "cancelled","verified"],
       default: "pending",
     },
   },
