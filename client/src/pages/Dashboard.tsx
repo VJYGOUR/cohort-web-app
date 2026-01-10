@@ -38,16 +38,17 @@ const Dashboard = () => {
           <div className="space-y-3">
             {enrollments.map((e) => (
               <div key={e._id} className="border rounded p-3 bg-gray-50">
-                <p className="font-medium">{e.cohortId.courseId.title}</p>
+                <p className="font-medium">{e.cohortId?.courseId.title}</p>
 
                 <p className="text-sm text-gray-600">
-                  Cohort: {e.cohortId.name}
+                  Cohort: {e.cohortId?.name}
                 </p>
 
                 <p className="text-sm text-gray-600">
-                  Starts: {new Date(e.cohortId.startDate).toDateString()}
+                  Starts: {new Date(e.cohortId?.startDate).toDateString()}
                 </p>
 
+                {/* Status */}
                 {/* Status */}
                 <div className="mt-2">
                   {e.status === "pending" && (
